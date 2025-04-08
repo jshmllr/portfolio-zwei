@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Maintain sufficient color contrast for text and interactive elements (e.g., APCA contrast method, WCAG 3.0 standards).  
+
+Add ARIA attributes (e.g., aria-label, aria-hidden) for dynamic or interactive content.  
+
+Ensure keyboard navigation and proper focus management (e.g., tabindex).
+

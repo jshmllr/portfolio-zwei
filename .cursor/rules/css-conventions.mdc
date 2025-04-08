@@ -1,0 +1,13 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Use logical properties (e.g., inline-size, block-size) to support internationalization.  
+
+Define CSS custom properties (e.g., --primary-color: #ff6b6b) for theming and easy maintenance.  
+
+Ensure responsive design using media queries, container queries, and fluid typography (e.g., font-size: clamp(16px, 4vw, 24px)).
+
+Use modern DOM apis where necessary.
+

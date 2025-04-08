@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Use the latest stable versions of libraries (e.g., Anime.js v4.0.0, imagesLoaded v5.x).  
+
+Avoid unnecessary dependencies; prioritize native JavaScript and CSS solutions when feasible.
+

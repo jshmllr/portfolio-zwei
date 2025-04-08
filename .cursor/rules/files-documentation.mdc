@@ -1,0 +1,14 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Include inline comments for complex or non-obvious code logic (e.g., // Calculate tilt based on mouse position).  
+
+Maintain a README.md file with:  
+Project overview.  
+
+Setup instructions.  
+
+Tips for customization.
+

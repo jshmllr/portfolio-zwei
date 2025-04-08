@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Use requestAnimationFrame for animations to ensure smooth, browser-optimized performance.  
+
+Minimize reflows and repaints by batching DOM updates where possible.  
+
+Implement lazy-loading for assets and animations using IntersectionObserver when appropriate.
+

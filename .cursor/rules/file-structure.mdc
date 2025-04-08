@@ -1,0 +1,14 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Organize files in a clear, logical directory structure:  
+css/: Stylesheets (e.g., demo.css, normalize.css, pieces.css).  
+
+img/: Image assets (e.g., background images).  
+
+js/: JavaScript files (e.g., main.js).
+
+Use descriptive, purpose-driven file and class names (e.g., .mode-toggle, .glitch-text).
+

@@ -1,0 +1,406 @@
+/* Define custom properties for theming */
+:root {
+    --bg-color: #010101;
+    --text-color: #c8c1c1;
+    --accent-design: #1FD8A4; /* Radix Jade 11 */
+    --accent-code: #E5484D; /* Radix Red 11 */
+    --font-primary: 'Roboto', sans-serif;
+    --font-mono: 'Roboto Mono', monospace;
+    --font-base: clamp(1rem, 0.34vw + 0.91rem, 1.19rem);
+    --font-scale: 1.125; /* Reduced from 1.333 for less dramatic scaling */
+    --font-sm: calc(var(--font-base) / var(--font-scale));
+    --font-md: var(--font-base);
+    --font-lg: calc(var(--font-base) * var(--font-scale));
+  }
+  
+  /* Box-sizing globally applied */
+  *, *::after, *::before {
+    box-sizing: border-box;
+  }
+  
+  /* Base styles with logical properties */
+  body {
+    font-family: var(--font-primary);
+    color: var(--text-color);
+    background: var(--bg-color);
+    font-smooth: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    overflow: hidden;
+  }
+  
+  /* Main layout with Grid instead of Flexbox for better control */
+  main {
+    display: flex;
+    overflow: hidden;
+    block-size: 100dvh; /* Use dynamic viewport height */
+    padding-bottom: env(safe-area-inset-bottom, 0); /* Account for iOS bottom bar */
+    container-type: inline-size;
+    container-name: main-container;
+    contain: layout;
+    justify-content: center; /* Horizontal centering */
+    align-items: center; /* Vertical centering */
+  }
+  
+  /* Links */
+  a {
+    text-decoration: none;
+    color: var(--accent-design);
+    outline: none;
+    cursor: pointer;
+  }
+  
+  a:hover {
+    color: #fff;
+  }
+  
+  a:focus {
+    outline: 1px solid var(--accent-design);
+  }
+  
+  /* Hidden elements with modern approach */
+  .hidden {
+    display: none;
+  }
+  
+  /* Loading animation */
+  .js .loading {
+    position: fixed;
+    z-index: 100;
+    inset: 0; /* Shorthand for top/left/right/bottom */
+    background: var(--bg-color);
+    transition: opacity 0.3s;
+  }
+  
+  .js .loading--hide {
+    pointer-events: none;
+    opacity: 0;
+  }
+  
+  .js .loading::after {
+    content: '- - -';
+    font-family: var(--font-mono);
+    font-size: clamp(1rem, 2.5vw, 1.5em);
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    animation: animLoader 1s infinite alternate forwards;
+  }
+  
+  @keyframes animLoader {
+    0% { content: '- - -'; }
+    25% { content: 'd - -'; }
+    50% { content: '- - c'; }
+    75% { content: '- / -'; }
+    100% { content: 'd - c'; }
+  }
+  
+  /* Buttons */
+  .btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  
+  .btn:focus {
+    outline: 1px solid var(--accent-design);
+  }
+  
+  .btn--menu {
+    font-size: 1em;
+    margin-inline-start: 2em; /* Logical property */
+    padding: 0;
+    color: var(--text-color);
+  }
+  
+  .btn--menu .icon--menu-alt,
+  .btn--menu.mode--code .icon--menu {
+    display: none;
+  }
+  
+  .btn--menu.mode--code .icon--menu-alt {
+    display: block;
+  }
+  
+  /* Icons */
+  .icon {
+    inline-size: 1.5em; /* Logical property for width */
+    block-size: 1.5em; /* Logical property for height */
+    margin: 0 auto;
+    fill: currentColor;
+  }
+  
+  /* Content layout */
+  .content,
+  .content__inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+  
+  .content__inner {
+    z-index: 100;
+    flex-direction: column;
+    align-content: flex-start;
+    padding: 1.5rem clamp(1rem, 5vw, 2rem) 0;
+    position: absolute;
+    inset: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) 
+          calc(env(safe-area-inset-bottom, 0) + 1rem) env(safe-area-inset-left, 0);
+  }
+  
+  /* Top section */
+  .content__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    inline-size: 100%;
+  }
+  
+  .title {
+    font-size: var(--font-lg);
+    font-weight: 500;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    block-size: 1.75em;
+    margin: 0;
+    color: var(--text-color);
+    width: fit-content;
+  }
+  
+  .title__inner.mode--design {
+    font-size: 1.5em;
+  }
+  
+  .title__inner.mode--code {
+    text-transform: lowercase;
+  }
+  
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    inline-size: 9em;
+    margin-block-start: 1em;
+    margin-inline-start: auto;
+  }
+  
+  .codrops-icon {
+    color: #484545;
+  }
+  
+  /* Menus container */
+  .menus-container {
+    container-type: normal;
+    container-name: menu-container;
+  }
+  
+  .mode--code,
+  .menu--code .menu__link {
+    font-family: var(--font-mono);
+    text-transform: lowercase;
+    color: var(--accent-code);
+  }
+  
+  /* Ensure glitching elements (including the Coder switch item) turn red in code mode */
+  [data-glitch].mode--code {
+    color: var(--accent-code);
+  }
+  
+  /* Additional specificity for the switch item */
+  .switch__item[data-glitch].mode--code {
+    color: var(--accent-code);
+  }
+  
+  /* Current item background colors need to be preserved */
+  .switch__item--current {
+    pointer-events: none;
+    color: #232323 !important; /* Override glitch colors for current item */
+    background-color: var(--accent-design);
+  }
+  
+  .mode--code .switch__item--current {
+    background-color: var(--accent-code);
+  }
+  
+  .menu {
+    flex: none;
+    font-size: clamp(1.2em, 2.5vw, 1.2em);
+    text-align: end;
+  }
+  
+  .menu__inner {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+  
+  .menu--code {
+    flex: none;
+    font-size: clamp(1em, 2.5vw, 1.85em);
+    text-align: end;
+  }
+  
+  .menu:not(.menu--code) .menu__item {
+    position: relative;
+  }
+  
+  .menu__item:not(:last-child) {
+    margin-block-end: 0.25em;
+  }
+  
+  .js .menu--code {
+    display: none;
+  }
+  
+  .menu__link {
+    display: inline-block;
+  }
+  
+  .menu--code .menu__link:hover {
+    color: #fff;
+  }
+  
+  /* Bottom section */
+  .content__bottom {
+    display: flex;
+    align-items: center;
+    inline-size: 100%;
+    margin-block-start: auto;
+    padding-bottom: max(env(safe-area-inset-bottom, 1rem), 1rem); /* Ensure minimum spacing */
+    position: sticky;
+    bottom: 0;
+  }
+  
+  .switch {
+    display: flex;
+    align-items: center;
+  }
+  
+  .switch__item {
+    position: relative;
+    line-height: 1;
+    margin-inline-end: 1.5em;
+    padding-block-end: 0.15em;
+    color: var(--text-color);
+  }
+  
+  .switch__item span {
+    pointer-events: none;
+  }
+  
+  .switch__item:first-child::after {
+    content: '';
+    position: absolute;
+    inset-block-start: -5%;
+    inset-inline-start: calc(100% + 0.75em);
+    inline-size: 1px;
+    block-size: 110%;
+    background: #464646;
+    transform: rotate(22.5deg);
+  }
+  
+  .link-wrap {
+    display: flex;
+    align-items: center;
+    block-size: 4em;
+    margin-inline-start: auto;
+  }
+  
+  .contact-link {
+    display: inline-block;
+    font-size: 1.25em;
+    transition: color 0.3s;
+    z-index: 10;
+    position: relative;
+  }
+  
+  .contact-link:hover {
+    color: #fff;
+  }
+  
+  .overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: rgba(107, 87, 86, 0.22);
+    opacity: 0;
+    will-change: opacity;
+  }
+  
+  /* Container query for content layout */
+  @container main-container (inline-size < 40rem) {
+    .content__top {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .menus-container {
+      margin-top: 1rem;
+      align-items: flex-start;
+    }
+    
+    .menu, .menu--code {
+      font-size: 1rem;
+      text-align: start;
+    }
+  }
+  
+  /* Media query for system-level adjustments */
+  @media (max-height: 38.5rem) {
+    .menus-container {
+      margin-top: 0.5rem;
+    }
+    
+    .menu, .menu--code {
+      font-size: 0.875rem;
+    }
+  }
+
+  @container menu-container (inline-size < 30rem) {
+    .menu__inner {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .menu__item:not(:last-child) {
+      margin-block-end: 0.5rem;
+    }
+  }
+  
+  /* Mobile adjustments */
+  @container main-container (inline-size < 768px) {
+    .content__inner {
+      padding-bottom: 2rem;
+    }
+    
+    .title {
+      font-size: var(--font-md);
+    }
+    
+    .menu, .menu--code {
+      font-size: var(--font-sm);
+    }
+  }
+  
+  /* Add this media query for very small screens */
+  @media (max-width: 480px) {
+    .pieces {
+      width: 85vw;
+      height: 130vw;
+    }
+    
+    .content__bottom {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }

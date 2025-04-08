@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Use modern ES6+ JavaScript syntax (e.g., const, let, arrow functions, classes).  
+
+Prefer async/await over callbacks for asynchronous operations.  
+
+Use template literals (e.g., `Hello, ${name}`) for string interpolation.
+

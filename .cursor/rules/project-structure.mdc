@@ -1,0 +1,18 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+project/
+├── css/
+│   ├── normalize.css
+│   ├── style.css
+│   └── pieces.css
+├── img/
+│   ├── normal.jpg
+│   ├── alt.jpg
+│   └── code.jpg
+├── js/
+│   └── main.js
+├── Readme.md
+└── index.html

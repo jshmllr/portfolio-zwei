@@ -1,0 +1,39 @@
+/* Define container context */
+.pieces {
+  container-type: inline-size;
+  container-name: pieces-container;
+  width: 58.6572vh;
+  height: 90vh;
+  margin: auto;
+  flex: none;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: center center; /* Ensure centered background */
+  contain: layout inline-size;
+  align-self: center; /* Vertical centering in main flex container */
+}
+
+.piece {
+  pointer-events: none;
+}
+
+/* Mobile-first media query for small screens */
+@media (max-width: 768px) {
+  .pieces {
+    width: 70vw;
+    height: 107vw; /* Maintain aspect ratio for mobile */
+    max-width: 400px;
+    max-height: 600px;
+  }
+}
+
+/* Container query for aspect ratio adjustments */
+@container pieces-container (max-aspect-ratio: 597/916) {
+  .pieces {
+    width: 80vw;
+    height: 122.75vw;
+  }
+}

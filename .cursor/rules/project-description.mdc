@@ -1,0 +1,17 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Project Description
+This project is a modern, interactive portfolio page designed for developers and designers. It features a dual-identity theme with distinct "Designer" and "Coder" modes, each offering unique styling and content to reflect the user's professional persona. The portfolio page is both minimalistic and visually engaging, optimized for performance and modern browsers. Key features include:
+Tiled Background Effect: A background image split into pieces that subtly tilt in response to mouse movement, creating a captivating 3D-like effect.
+
+Glitch Animations: Dynamic glitch effects applied to text elements (e.g., titles, contact links) for a tech-inspired, futuristic aesthetic.
+
+Mode-Switching: Smooth transitions between "Designer" and "Coder" modes, with animated image pieces and menu updates to enhance the user experience.
+
+Performance Optimization: Built with efficiency in mind, ensuring fast load times and smooth interactions across devices.
+
+This project combines creativity with technical precision, making it an ideal showcase for professionals with both design and development skills.
+
