@@ -1,75 +1,70 @@
-# Developer/Designer Portfolio Page Layout
+# Josh Miller - Designer & Coder Portfolio
 
-A modern, interactive portfolio page concept with a developer/designer theme, featuring a special image-tiling effect, glitch animations, and mode-switching functionality. Built with HTML, CSS, and JavaScript, this project showcases a creative way to present a dual-identity portfolio (e.g., designer and coder) with smooth transitions and engaging visual effects.
+A modern, interactive portfolio page with a dual-identity theme that showcases my work as both a designer and developer. This personal site features special image-tiling effects, glitch animations, and seamless mode-switching functionality - creating an engaging and unique browsing experience.
 
-## What This Project Does
+## About Me
 
-This project creates a single-page portfolio layout that:
+I'm Josh Miller, a designer and coder based in Tennessee. I blend creative design principles with technical coding expertise to create memorable digital experiences. Visit my full portfolio at [jshmllr.com](https://jshmllr.com) to see more of my work.
 
-- Displays a tiled background image that tilts based on mouse movement
-- Allows switching between "Designer" and "Coder" modes, each with unique styling and content
-- Features glitch effects on text elements (title, contact link) for a dynamic, techy feel
-- Animates content transitions (e.g., menu items, image pieces) when switching modes
-- Provides an overlay effect during mode transitions for visual polish
+## What This Portfolio Does
 
-The design is minimalistic yet striking, with a focus on interactivity and performance, making it ideal for developers or designers looking to showcase their work creatively.
+My portfolio creates an immersive single-page experience that:
 
-## How It Works
+- Displays a tiled background image that responds to mouse movement with a subtle 3D tilt effect
+- Allows visitors to switch between "Designer" and "Coder" modes, each with unique styling and content
+- Features dynamic glitch effects on text elements for a distinctive tech-inspired aesthetic
+- Animates content transitions when switching modes for a polished user experience
+- Uses modern CSS features including logical properties, container queries, and custom properties for responsive design
+
+The minimalist approach puts focus on content while the interactive elements create a memorable impression.
+
+## Technical Implementation
 
 ### Core Components
 
 #### HTML Structure (index.html):
-- A single `<main>` element contains the image pieces (`.pieces`), overlay (`.overlay`), and content (`.content`)
-- SVG icons enhance the UI (e.g., arrows, menu toggle)
-- Content includes a title, mode switcher, menus, and a contact link
+- A clean `<main>` element containing image pieces, overlay, and content
+- Content structure with a title, mode switcher, navigation menus, and contact link
 
 #### CSS Styling (css/):
-- `normalize.css`: Resets browser styles for consistency
-- `demo.css`: Defines the layout using modern CSS (Grid, Flexbox, logical properties) and custom properties for theming
-- `pieces.css`: Styles the tiled image pieces with responsive sizing
+- `normalize.css`: Ensures consistent rendering across browsers
+- `style.css`: Implements modern CSS with logical properties, container queries, and custom properties
+- `pieces.css`: Controls the tiled image pieces with responsive sizing
 
 #### JavaScript Logic (js/main.js):
-- **PieceMaker Class**: Splits the background image into tiles, applies a tilt effect on mouse move, and animates pieces during mode switches or hover interactions
-- **GlitchFx Class**: Adds a glitch animation to text elements, toggling between "design" and "code" styles randomly
-- **Mode Switching**: Handles transitions between "Designer" and "Coder" modes, animating content and updating styles
-- Uses Anime.js (v3.2.2) for smooth animations and imagesLoaded to ensure assets load before initialization
+- **PieceMaker Class**: Handles image tiling, applies tilt effects, and manages animations
+- **GlitchFx Class**: Creates text glitch animations with random timing
+- **Mode Switching**: Manages transitions between "Designer" and "Coder" modes
+- Uses modern libraries: Anime.js for smooth animations, imagesLoaded for asset management, and charming for text effects
 
-### Key Features
+### Modern Features (2025 Updates)
 
-- **Tilt Effect**: The image tiles subtly rotate and translate based on mouse position, creating a 3D-like interaction
-- **Glitch Animation**: Text elements flicker between modes with random transforms, controlled by timing intervals
-- **Mode Switch**: Clicking "Designer" or "Coder" triggers animations (e.g., pieces flying out/in, menu fading) and updates the UI
-- **Performance**: Leverages requestAnimationFrame, ResizeObserver, and GPU-accelerated transforms for smooth operation
+- **Improved Performance**: Uses ResizeObserver and requestAnimationFrame for fluid animations
+- **Better Responsiveness**: Implemented container queries for more precise layout control
+- **Enhanced Accessibility**: Proper focus states and keyboard navigation
+- **Mobile Optimizations**: Responsive design adjustments for various screen sizes
+- **Code Improvements**: Modern ES6+ syntax and cleaner codebase structure
 
-### What to Expect
+## Links
 
-When you load the page:
-1. A loading animation (`- - -` to `d - c`) appears briefly until images are ready
-2. The tiled background image loads, tilting as you move your mouse
-3. The "Designer" mode is active by default, showing a design-themed menu and styling
-4. Hovering over "Work with me" triggers a custom piece animation (pieces shift left or right based on mode)
-5. Clicking "Coder" switches to a code-themed UI with a different menu and glitch effects
-6. The glitch animation runs periodically on the title and contact link, pausing on hover or mode switch
+- Portfolio: [jshmllr.com](https://jshmllr.com)
+- Projects: [jshmllr.com/projects](https://jshmllr.com/projects)
+- Journal: [jshmllr.com/journal](https://jshmllr.com/journal)
+- Experiments: [codepen.io/jshmllr](https://codepen.io/jshmllr)
+- GitHub: [github.com/jshmllr](https://github.com/jshmllr)
 
-The experience is visually engaging, with a balance of subtle and bold effects, optimized for modern browsers (as of March 2025).
-
-## Setup Instructions
-
-### Prerequisites
-
-- A modern web browser (e.g., Chrome, Firefox, Edge, Safari) with JavaScript enabled
-- Basic knowledge of HTML, CSS, and JavaScript for customization
-- A local server (e.g., live-server or Node.js) for development to avoid CORS issues with file loading
-
-### Project Structure
+## Project Structure
+```
 portfolio/
 ├── css/
 │   ├── normalize.css
-│   ├── demo.css
+│   ├── style.css
 │   └── pieces.css
-├── img/         # Background images
+├── img/
+│   ├── normal.jpg
+│   ├── alt.jpg
+│   └── code.jpg
 ├── js/
-│   ├── main.js
-│   └── imagesloaded.pkgd.min.js
+│   └── main.js
 └── index.html
-# portfolio-zwei
+```
