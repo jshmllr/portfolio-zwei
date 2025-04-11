@@ -1,3 +1,5 @@
+// @ts-nocheck
+// This is a JavaScript file
 // Modernized main.js (March 2025)
 // Licensed under MIT
 
@@ -487,7 +489,8 @@ const DOM = {
   switchCtrls: document.querySelector('.switch'),
   switchModeCtrls: {
     design: document.querySelector('#switch-design'),
-    code: document.querySelector('#switch-code')
+    code: document.querySelector('#switch-code'),
+    divider: document.querySelector('.switch__divider')
   },
   pieces: document.querySelector('.pieces'),
   glitchElems: document.querySelectorAll('[data-glitch]'),
@@ -597,18 +600,8 @@ function initEvents() {
     switchMode(ev);
   });
 
-  // Add keyboard navigation
+  // Add keyboard navigation for arrow keys only
   document.addEventListener('keydown', (ev) => {
-    // Tab key to switch modes
-    if (ev.key === 'Tab') {
-      ev.preventDefault();
-      const event = new Event('click');
-      if (mode === 'design') {
-        DOM.switchModeCtrls.code.dispatchEvent(event);
-      } else {
-        DOM.switchModeCtrls.design.dispatchEvent(event);
-      }
-    }
     // Arrow keys to switch modes
     if (ev.key === 'ArrowLeft' && mode === 'code') {
       ev.preventDefault();
@@ -774,6 +767,12 @@ function switchContent() {
   // Remove the old mode class and add the new one to the switch controls
   DOM.switchCtrls.classList.remove(`mode--${mode === 'code' ? 'design' : 'code'}`);
   DOM.switchCtrls.classList.add(`mode--${mode}`);
+  
+  // Update the divider to match the current mode
+  if (DOM.switchModeCtrls.divider) {
+    DOM.switchModeCtrls.divider.classList.remove('mode--design', 'mode--code');
+    DOM.switchModeCtrls.divider.classList.add(`mode--${mode}`);
+  }
   
   // Call the appropriate mode transition function
   mode === 'code' ? switchToCode() : switchToDesign();
