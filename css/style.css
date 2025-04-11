@@ -1,4 +1,7 @@
 /* Define custom properties for theming */
+* {
+    border: 1px solid red;
+}
 :root {
     --bg-color: #010101;
     --text-color: #c8c1c1;
@@ -137,14 +140,6 @@ a:focus {
     display: block;
 }
 
-/* Icons */
-.icon {
-    inline-size: 1.5em; /* Logical property for width */
-    block-size: 1.5em; /* Logical property for height */
-    margin: 0 auto;
-    fill: currentColor;
-}
-
 /* Content layout */
 .content,
 .content__inner {
@@ -180,7 +175,6 @@ a:focus {
     line-height: var(--line-height-tight);
     display: flex;
     align-items: center;
-    block-size: 1.75em;
     margin: 0;
     color: var(--text-color);
     width: fit-content;
@@ -204,11 +198,6 @@ a:focus {
     margin-block-start: 1em;
     margin-inline-start: auto;
 }
-
-.codrops-icon {
-    color: #484545;
-}
-
 /* Menus container */
 .menus-container {
     container-type: normal;
@@ -261,7 +250,7 @@ a:focus {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 2px;
+    text-align: end;
 }
 
 .menu--code {
@@ -304,8 +293,6 @@ a:focus {
     inline-size: 100%;
     margin-block-start: auto;
     padding-bottom: max(env(safe-area-inset-bottom, 1rem), 1rem); /* Ensure minimum spacing */
-    position: sticky;
-    bottom: 0;
 }
 
 .switch {
@@ -374,7 +361,6 @@ a:focus {
 .link-wrap {
     display: flex;
     align-items: center;
-    block-size: 4em;
     margin-inline-start: auto;
 }
 
@@ -486,7 +472,6 @@ a:focus {
 @media screen and (max-width: 480px) {
     .content__bottom {
         flex-direction: column-reverse;
-        gap: calc(var(--spacing-base) * 2);
         align-items: flex-start;
         margin-bottom: var(--spacing-base);
     }
@@ -505,10 +490,6 @@ a:focus {
     .switch__item {
         justify-content: center;
         text-align: center;
-    }
-    
-    .menu__inner {
-        gap: calc(var(--spacing-base) * 2);
     }
     
     .menu__item:not(:last-child) {
