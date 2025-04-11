@@ -9,8 +9,8 @@
   flex-wrap: wrap;
   background-size: 100% auto;
   background-repeat: no-repeat;
-  background-position: 0 0; /* Match original: start from top-left */
-  /* Let JS control final dimensions */
+  background-position: 0 0;
+  /* JS controls final dimensions */
 }
 
 .piece {

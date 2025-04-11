@@ -266,27 +266,42 @@ class PieceMaker {
       anime({
         targets: targetPieces,
         duration: dir === 'out' ? 600 : 500,
-        // X translation based on column position
-        translateX: dir === 'out' 
-          ? (t) => {
-              const column = parseInt(t.dataset.column);
-              return column < this.options.pieces.columns/2 ? anime.random(50, 100) : anime.random(-100, -50);
-            }
-          : (t) => {
-              const column = parseInt(t.dataset.column);
-              return column < this.options.pieces.columns/2 ? [anime.random(50, 100), 0] : [anime.random(-100, -50), 0];
-            },
-        // Y translation: upward for 'out', from up to original for 'in'
-        translateY: dir === 'out'
-          ? [0, anime.random(-1000, -800)]
-          : [anime.random(-1000, -800), 0],
+        // Use simple string values for animations
+        translateX: {
+          value: function(el) {
+            const column = parseInt(el.dataset.column);
+            // For 'out' animation, move left/right based on column position
+            if (dir === 'out') {
+              return column < this.options.pieces.columns/2 ? '75px' : '-75px';
+            } 
+            // For 'in' animation, start offset and return to 0
+            return '0px';
+          }.bind(this),
+          duration: dir === 'out' ? 600 : 500
+        },
+        translateY: {
+          value: dir === 'out' ? '-900px' : '0px', // Simple string values
+          duration: dir === 'out' ? 600 : 500
+        },
         opacity: {
           value: dir === 'out' ? 0 : 1,
           duration: dir === 'out' ? 600 : 300,
           easing: 'linear'
         },
-        delay: (t, i) => Math.max(0, i * 6 + parseInt(t.dataset.delay || 0)),
-        easing: dir === 'out' ? [0.2, 1, 0.3, 1] : [0.8, 1, 0.3, 1],
+        delay: function(el, i) {
+          return Math.max(0, i * 6 + parseInt(el.dataset.delay || 0));
+        },
+        easing: 'easeOutExpo',
+        begin: function(anim) {
+          // If animating 'in', set initial translateY
+          if (dir === 'in') {
+            targetPieces.forEach(function(el) {
+              el.style.transform = 'translateY(-900px)';
+              // Make sure pieces are visible before animating in
+              el.style.opacity = '0'; 
+            });
+          }
+        },
         complete: callback
       });
     } catch (error) {
@@ -334,21 +349,43 @@ class PieceMaker {
         duration: 250,
         easing: 'easeOutExpo',
         // Move left in design mode, left in code mode
-        // For code mode, we want pieces to come in from the left
-        translateX: mode === 'code' 
-          ? [anime.random(-300, -100), 0] // Code mode: FROM left TO inside
-          : dir === 'left' ? anime.random(-300, -100) : anime.random(100, 300),     // Design mode: FROM inside TO outside
-        // Small random vertical movement
-        translateY: mode === 'code'
-          ? [anime.random(0, 100), 0]  // Code mode: FROM random TO 0
-          : anime.random(0, 100),      // Design mode: FROM 0 TO random
+        translateX: {
+          value: function() {
+            if (mode === 'code') {
+              return '0px'; // Code mode: move TO inside (final position)
+            } else {
+              return dir === 'left' ? '-200px' : '200px'; // Design mode: move pieces OUT
+            }
+          },
+          duration: 250
+        },
+        translateY: {
+          value: function() {
+            if (mode === 'code') {
+              return '0px'; // Code mode: move TO center (final position)
+            } else {
+              return '50px'; // Design mode: add small Y offset
+            }
+          },
+          duration: 250
+        },
         opacity: {
-          // In code mode, fade in; in design mode, fade out
-          value: mode === 'code' ? [0, 1] : 0,
+          value: mode === 'code' ? 1 : 0, // In code mode, fade in; in design mode, fade out
           duration: 150,
           easing: 'linear'
         },
-        delay: (t, i) => Math.max(0, i * 5 + parseInt(t.dataset.delay || 0))
+        delay: function(el, i) {
+          return Math.max(0, i * 5 + parseInt(el.dataset.delay || 0));
+        },
+        begin: function() {
+          // Set initial positions for pieces if in code mode (coming in)
+          if (mode === 'code') {
+            targetPieces.forEach(piece => {
+              piece.style.transform = 'translateX(-200px) translateY(50px)';
+              piece.style.opacity = '0';
+            });
+          }
+        }
       });
       
     } catch (error) {
@@ -392,20 +429,23 @@ class PieceMaker {
         targets: targetPieces,
         duration: 250,
         easing: 'easeOutExpo',
-        // In code mode, pieces should animate OUT on reset
-        // In design mode, pieces should animate back IN on reset
-        translateX: mode === 'code'
-          ? anime.random(-300, -100) // Code mode: always animate OUT to the left
-          : 0,                       // Design mode: return to center
-        translateY: mode === 'code'
-          ? anime.random(0, 100)  // Code mode: random Y movement
-          : 0,                    // Design mode: return to center
+        // Different reset animations for code vs design mode
+        translateX: {
+          value: mode === 'code' ? '-200px' : '0px', // Code: animate OUT, Design: return to center
+          duration: 250
+        },
+        translateY: {
+          value: mode === 'code' ? '50px' : '0px', // Code: small Y offset, Design: return to center
+          duration: 250
+        },
         opacity: {
-          value: mode === 'code' ? 0 : 1, // Code mode: fade out; Design mode: fade in
+          value: mode === 'code' ? 0 : 1, // Code: fade out, Design: fade in
           duration: 150,
           easing: 'linear'
         },
-        delay: (t, i, c) => Math.max(0, (c-i-1) * 2 + parseInt(t.dataset.delay || 0)),
+        delay: function(el, i, l) {
+          return Math.max(0, (l-i-1) * 2 + parseInt(el.dataset.delay || 0));
+        },
         complete: callback
       });
       
