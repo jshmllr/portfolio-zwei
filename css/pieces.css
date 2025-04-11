@@ -1,8 +1,6 @@
 /* Define container context */
 .pieces {
-  container-type: inline-size;
-  container-name: pieces-container;
-  width: 58.6572vh;
+  width: 58.6572vh; /* make the size of container to be same ratio like image */
   height: 90vh;
   margin: auto;
   flex: none;
@@ -11,29 +9,28 @@
   flex-wrap: wrap;
   background-size: 100% auto;
   background-repeat: no-repeat;
-  background-position: center center; /* Ensure centered background */
-  contain: layout inline-size;
-  align-self: center; /* Vertical centering in main flex container */
+  background-position: 0 0; /* Match original: start from top-left */
 }
 
 .piece {
   pointer-events: none;
+  flex: none; /* Ensure pieces don't grow/shrink */
+}
+
+/* Media query for different aspect ratios */
+@media screen and (max-aspect-ratio: 597/916) {
+  .pieces {
+    width: 80vw;
+    height: 122.75vw;
+  }
 }
 
 /* Mobile-first media query for small screens */
 @media (max-width: 768px) {
   .pieces {
     width: 70vw;
-    height: 107vw; /* Maintain aspect ratio for mobile */
+    height: 107vw;
     max-width: 400px;
     max-height: 600px;
-  }
-}
-
-/* Container query for aspect ratio adjustments */
-@container pieces-container (max-aspect-ratio: 597/916) {
-  .pieces {
-    width: 80vw;
-    height: 122.75vw;
   }
 }

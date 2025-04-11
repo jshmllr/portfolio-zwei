@@ -46,8 +46,8 @@ class PieceMaker {
 
   // Initialize the PieceMaker
   _init() {
-    // Extract image source from background-image CSS property
-    this.imgsrc = this.el.style.backgroundImage.slice(4, -1).replace(/"/g, '');
+    // Extract image source from background-image CSS property (use replace for consistency)
+    this.imgsrc = this.el.style.backgroundImage.replace('url(','').replace(')','').replace(/\"/gi, "");
     // Store window dimensions for responsive calculations
     this.win = { width: window.innerWidth, height: window.innerHeight };
     // Store element dimensions for piece calculations
@@ -60,7 +60,7 @@ class PieceMaker {
   // Create the layout of pieces
   _layout() {
     // Set the initial background image from data attribute
-    this.el.style.backgroundImage = this.el.dataset.imgCode;
+    this.el.style.backgroundImage = this.el.getAttribute('data-img-code');
     
     // Clear any existing pieces
     if (this.pieces && this.pieces.length) {
@@ -74,8 +74,6 @@ class PieceMaker {
     for (let r = 0; r < this.options.pieces.rows; r++) {
       for (let c = 0; c < this.options.pieces.columns; c++) {
         const piece = this._createPiece(r, c);
-        // Position the background image for each piece to show the correct portion
-        piece.style.backgroundPosition = `${-c * 100}% ${-r * 100}%`;
         this.pieces.push(piece);
       }
     }
@@ -94,11 +92,13 @@ class PieceMaker {
     // Set the background image to the same as the main element
     piece.style.backgroundImage = `url(${this.imgsrc})`;
     piece.className = 'piece';
-    // Set dimensions using logical properties for better RTL support
-    piece.style.inlineSize = `${w}px`;
-    piece.style.blockSize = `${h}px`;
+    // Set dimensions using standard properties for consistency with original
+    piece.style.width = `${w}px`;
+    piece.style.height = `${h}px`;
     // Set background size to ensure the entire image spans across all pieces
     piece.style.backgroundSize = `${w * this.options.pieces.columns}px auto`;
+    // Set background position
+    piece.style.backgroundPosition = `${-column * 100}% ${-row * 100}%`;
     // Store column information for filtering pieces later
     piece.dataset.column = column.toString();
     // Add random delay for staggered animations
@@ -108,8 +108,8 @@ class PieceMaker {
     this.el.appendChild(piece);
     
     // Update parent element dimensions to contain all pieces
-    this.el.style.inlineSize = `${w * this.options.pieces.columns}px`;
-    this.el.style.blockSize = `${h * this.options.pieces.rows}px`;
+    this.el.style.width = `${w * this.options.pieces.columns}px`;
+    this.el.style.height = `${h * this.options.pieces.rows}px`;
     
     return piece;
   }
@@ -130,62 +130,71 @@ class PieceMaker {
   _initEvents() {
     // Handle mouse movement to create tilt effect
     const onMouseMove = (ev) => {
-      // Use requestAnimationFrame for smooth animation
       requestAnimationFrame(() => {
-        // Skip if tilt is disabled
         if (!this.tilt) {
           this.el.style.transform = 'none';
           return;
         }
         
-        // Get mouse position
         const { x, y } = getMousePos(ev);
         
-        // Calculate rotation and translation based on mouse position
-        // Maps mouse position to rotation/translation values within defined limits
         const rotX = 2 * this.options.tilt.maxRotationX / this.win.height * y - this.options.tilt.maxRotationX;
         const rotY = 2 * this.options.tilt.maxRotationY / this.win.width * x - this.options.tilt.maxRotationY;
         const transX = 2 * this.options.tilt.maxTranslationX / this.win.width * x - this.options.tilt.maxTranslationX;
         const transY = 2 * this.options.tilt.maxTranslationY / this.win.height * y - this.options.tilt.maxTranslationY;
         
-        // Apply 3D transform with perspective for tilt effect
         this.el.style.transform = `perspective(1000px) translate3d(${transX}px, ${transY}px, 0) rotate3d(1, 0, 0, ${rotX}deg) rotate3d(0, 1, 0, ${rotY}deg)`;
       });
     };
 
     // Handle window resizing to adjust piece sizes
-    const resizeObserver = new ResizeObserver(debounce(() => {
+    const onResize = debounce(() => {
       // Update window dimensions
       this.win = { width: window.innerWidth, height: window.innerHeight };
       // Reset container dimensions
-      this.el.style.inlineSize = this.el.style.blockSize = '';
+      this.el.style.width = this.el.style.height = '';
       // Get new dimensions
       const { width, height } = this.el.getBoundingClientRect();
       this.dimensions = { width, height };
       
-      // Resize all pieces proportionally
-      this.pieces.forEach((piece) => {
-        const w = Math.round(width / this.options.pieces.columns);
-        const h = Math.round(height / this.options.pieces.rows);
-        piece.style.inlineSize = `${w}px`;
-        piece.style.blockSize = `${h}px`;
-        piece.style.backgroundSize = `${w * this.options.pieces.columns}px auto`;
-        this.el.style.inlineSize = `${w * this.options.pieces.columns}px`;
-        this.el.style.blockSize = `${h * this.options.pieces.rows}px`;
-      });
-    }, 5));
+      // Recalculate piece dimensions
+      const w = Math.round(width / this.options.pieces.columns);
+      const h = Math.round(height / this.options.pieces.rows);
+      
+      // Loop through pieces and update each one
+      let i = 0;
+      for (let r = 0; r < this.options.pieces.rows; r++) {
+        for (let c = 0; c < this.options.pieces.columns; c++) {
+          const piece = this.pieces[i];
+          if (piece) {
+            // Update size
+            piece.style.width = `${w}px`;
+            piece.style.height = `${h}px`;
+            // Update background size to ensure proper image scaling
+            piece.style.backgroundSize = `${w * this.options.pieces.columns}px auto`;
+            // Update background position to maintain alignment
+            piece.style.backgroundPosition = `${-c * 100}% ${-r * 100}%`;
+          }
+          i++;
+        }
+      }
+      
+      // Update container dimensions
+      this.el.style.width = `${w * this.options.pieces.columns}px`;
+      this.el.style.height = `${h * this.options.pieces.rows}px`;
+    }, 10);
 
     // Add event listeners
     document.addEventListener('mousemove', onMouseMove);
-    resizeObserver.observe(this.el);
+    window.addEventListener('resize', onResize);
   }
 
   // Create a continuous loop animation effect
   loopFx() {
     try {
       this.isLoopFXActive = true;
-      // Switch to alternate image for the effect
-      this.el.style.backgroundImage = this.el.dataset.imgAlt;
+      // Switch to alternate image for the effect - use getAttribute like original
+      this.el.style.backgroundImage = this.el.getAttribute('data-img-alt');
       
       // Remove any existing animations
       anime.remove(this.pieces);
@@ -230,8 +239,8 @@ class PieceMaker {
   // Stop the loop animation effect
   stopLoopFx() {
     this.isLoopFXActive = false;
-    // Set background to the code image (ensures we see the code image during hover)
-    this.el.style.backgroundImage = this.el.dataset.imgCode;
+    // Set background to the code image - use getAttribute like original
+    this.el.style.backgroundImage = this.el.getAttribute('data-img-code');
     // Remove any ongoing animations
     anime.remove(this.pieces);
     // Reset opacity of all pieces
@@ -244,8 +253,8 @@ class PieceMaker {
       // Remove any existing animations
       anime.remove(this.pieces);
       
-      // Convert to array
-      const targetPieces = Array.from(this.pieces);
+      // Convert to array - reverse for consistent animation direction with original
+      const targetPieces = Array.from(this.pieces).reverse();
       
       if (targetPieces.length === 0) {
         console.error('No pieces found for animation');
@@ -256,7 +265,7 @@ class PieceMaker {
       // Apply animation with direction-based properties
       anime({
         targets: targetPieces,
-        duration: dir === 'out' ? 250 : 400,
+        duration: dir === 'out' ? 600 : 500,
         // X translation based on column position
         translateX: dir === 'out' 
           ? (t) => {
@@ -269,14 +278,15 @@ class PieceMaker {
             },
         // Y translation: upward for 'out', from up to original for 'in'
         translateY: dir === 'out'
-          ? [0, anime.random(-800, -500)]
-          : [anime.random(-800, -500), 0],
+          ? [0, anime.random(-1000, -800)]
+          : [anime.random(-1000, -800), 0],
         opacity: {
           value: dir === 'out' ? 0 : 1,
-          duration: dir === 'out' ? 150 : 250
+          duration: dir === 'out' ? 600 : 300,
+          easing: 'linear'
         },
-        delay: (t, i) => Math.max(0, i * 5 + parseInt(t.dataset.delay || 0)),
-        easing: 'easeOutExpo',
+        delay: (t, i) => Math.max(0, i * 6 + parseInt(t.dataset.delay || 0)),
+        easing: dir === 'out' ? [0.2, 1, 0.3, 1] : [0.8, 1, 0.3, 1],
         complete: callback
       });
     } catch (error) {
@@ -293,7 +303,7 @@ class PieceMaker {
     
     this.fxCustomTriggered = true;
     // Set background image based on mode
-    this.el.style.backgroundImage = this.el.dataset.imgCode;
+    this.el.style.backgroundImage = this.el.getAttribute('data-img-code');
     
     try {
       // Filter pieces based on current direction 
@@ -627,7 +637,7 @@ function initEvents() {
       
       // In code mode, set background to code.jpg for hover animation
       if (mode === 'code') {
-        pm.el.style.backgroundImage = pm.el.dataset.imgCode;
+        pm.el.style.backgroundImage = pm.el.getAttribute('data-img-code');
       }
     } catch (error) {
       console.error('Error during contact mouseenter:', error);
@@ -643,7 +653,7 @@ function initEvents() {
         if (!disablePageFx) {
           // In code mode, maintain code.jpg background after reset
           if (mode === 'code') {
-            pm.el.style.backgroundImage = pm.el.dataset.imgCode;
+            pm.el.style.backgroundImage = pm.el.getAttribute('data-img-code');
           } else {
             playFx();
           }
@@ -739,7 +749,7 @@ function switchMode(ev) {
         disablePageFx = false;
       } else {
         // For code mode, ensure we show code.jpg
-        pm.el.style.backgroundImage = pm.el.dataset.imgCode;
+        pm.el.style.backgroundImage = pm.el.getAttribute('data-img-code');
       }
       
       console.log('Animation complete, isAnimating set to false');
