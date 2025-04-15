@@ -12,9 +12,8 @@
     --font-size-base: 16px;
     --font-size-sm: 1rem;      /* 16px */
     --font-size-md: 1.25rem;   /* 20px */
-    --font-size-lg: 1.5rem;    /* 24px */
+    --font-size-lg: 1.5rem;    /* 24px Not in use*/
     --font-size-xl: 2rem;      /* 32px */
-    --touch-target-size: 40px; /* Minimum size for touch targets (accessibility) */
     --spacing-base: 4px;       /* Base unit for spacing calculations */
     /* Font weights */
     --weight-regular: 400;
@@ -227,6 +226,31 @@ a:focus {
     letter-spacing: 0.01em;    /* Slightly open up the sans-serif for better readability */
 }
 
+/* Custom styling for title in code mode on small phones */
+@media screen and (max-width: 480px) {
+    .title__inner.mode--code {
+        font-family: 'Space Mono', monospace;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+        line-height: 1.5rem;
+        letter-spacing: 0.005em;
+    }
+    
+    .title__inner.mode--design {
+        font-family: var(--font-primary);
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+        line-height: 1.5rem;
+        letter-spacing: 0.005em;
+    }
+
+    .content__inner {
+        padding: 1rem 1.25rem 1.5rem 1.25rem; /* 16px top, 20px right, 24px bottom, 20px left */
+    }
+}
+
 /* Ensure glitching elements turn red in code mode */
 [data-glitch].mode--code {
     color: var(--accent-code);
@@ -293,7 +317,6 @@ a:focus {
 .menu__link {
     display: flex;
     align-items: center;
-    min-height: var(--touch-target-size); /* Ensure touch targets are large enough */
     min-width: var(--touch-target-size);
     padding: calc(var(--spacing-base) * 1.5);
     font-size: var(--font-size-md);
@@ -332,8 +355,6 @@ a:focus {
     position: relative;
     display: flex;
     align-items: center;
-    min-height: var(--touch-target-size); /* Ensure touch targets are large enough */
-    min-width: var(--touch-target-size);
     padding: calc(var(--spacing-base) * 1.5);
     font-size: var(--font-size-md);
     z-index: 1;
@@ -399,8 +420,6 @@ a:focus {
 .contact-link {
     display: flex;
     align-items: center;
-    min-height: var(--touch-target-size); /* Ensure touch targets are large enough */
-    min-width: var(--touch-target-size);
     padding: calc(var(--spacing-base) * 1.5);
     font-size: var(--font-size-md);
     font-weight: var(--weight-medium);
@@ -472,8 +491,6 @@ a:focus {
     
     /* Ensure touch targets are large enough on mobile */
     .menu__link {
-        min-height: var(--touch-target-size);
-        min-width: var(--touch-target-size);
         display: flex;
         align-items: center;
         padding: 12px 8px;
@@ -482,18 +499,13 @@ a:focus {
     /* Ensure touch targets are large enough on mobile */
     .switch__item {
         font-size: clamp(1.125rem, 4vw, 1.5rem);
-        min-height: var(--touch-target-size);
-        min-width: var(--touch-target-size);
         display: flex;
         align-items: center;
         padding: 12px 8px;
     }
     
-    /* Ensure touch targets are large enough on mobile */
     .contact-link {
         font-size: clamp(1.25rem, 4.5vw, 1.75rem);
-        min-height: var(--touch-target-size);
-        min-width: var(--touch-target-size);
         display: flex;
         align-items: center;
         padding: 12px 8px;
@@ -502,27 +514,91 @@ a:focus {
 
 /* Small mobile screens */
 @media screen and (max-width: 480px) {
-    .content__bottom {
-        margin-bottom: var(--spacing-base); /* Add bottom margin */
+    .title {
+        margin-top: 0.25rem;
     }
     
     .link-wrap {
-        width: fit-content;    /* Only as wide as needed */
+        width: fit-content;
+    }
+    
+    .contact-link {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 0.5rem 0.75rem; /* 8px 12px */
+        border-radius: 0;
+        
+        /* Text styling */
+        font-style: normal;
+        font-weight: 400;
+        font-size: 0.875rem;   /* 14px */
+        line-height: 1.125rem;  /* 18px */
+        text-align: right;
+        letter-spacing: 0.005em;
     }
     
     .switch {
         width: fit-content;    /* Only as wide as needed */
         justify-content: center;
-        gap: calc(var(--spacing-base) * 1.5); /* More space between items */
+        gap: 1rem;             /* 16px gap between items */
+        flex-direction: row;
+        padding: 0;
     }
     
     .switch__item {
         justify-content: center;
         text-align: center;    /* Center text on small screens */
+        flex-direction: row;
+        padding: 0.5rem 0.375rem; /* 8px 6px */
+        
+        /* Text styling for switch items */
+        font-style: normal;
+        font-weight: 400;
+        font-size: 0.875rem;   /* 14px */
+        line-height: 1.125rem;  /* 18px */
+        letter-spacing: 0.005em;
+    }
+    
+    /* Style for the slash divider between switch items on small screens */
+    .switch__divider {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1.125rem;   /* 18px */
+        line-height: 1.125rem;  /* 18px */
+        text-align: center;
+        letter-spacing: 0.005em;
     }
     
     .menu__item:not(:last-child) {
         margin-block-end: var(--spacing-base); /* More space between items */
+    }
+    
+    /* Menu link container styling on small phones */
+    .menu__link {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 8px 12px;
+        
+        /* Text styling for menu links */
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 18px;
+        text-align: right;
+        letter-spacing: 0.005em;
+    }
+    
+    /* Keep menu right-aligned even on small screens */
+    .menu, .menu--code {
+        text-align: end;
+    }
+    
+    .menu__inner {
+        align-items: flex-end;
     }
 }
 
@@ -547,31 +623,25 @@ a:focus {
 
 /* Desktop */
 @media screen and (min-width: 769px) {
-    .title {
-        font-size: var(--font-size-lg); /* Large title on desktop */
-    }
-    
     /* Smaller padding on desktop where precision pointing is available */
     .menu__link {
         padding: var(--spacing-base);
-        min-height: auto;      /* No minimum height needed on desktop */
     }
     
     .switch__item {
         padding: var(--spacing-base);
-        min-height: auto;      /* No minimum height needed on desktop */
     }
     
     .contact-link {
         padding: var(--spacing-base);
-        min-height: auto;      /* No minimum height needed on desktop */
     }
 }
 
 /* Extra small screens (iPhone SE, etc.) */
 @media (max-width: 389px) {
     .title {
-        font-size: 1.25rem;    /* Smaller title on tiny screens */
+        font-size: 1.25rem;
+        margin-left: 0.5rem;    /* Smaller title on tiny screens */
     }
     
     .content__top {

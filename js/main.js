@@ -568,15 +568,29 @@ let pm, gfx; // PieceMaker and GlitchFx instances
 // Modernized charming.js
 // Splits text into individual characters wrapped in spans
 function charming(element) {
-  const text = element.textContent;
-  element.innerHTML = '';
-  // Create a span for each character
-  text.split('').forEach((char, i) => {
-    const span = document.createElement('span');
-    span.className = `char${i + 1}`;
-    span.textContent = char;
-    element.appendChild(span);
-  });
+    const text = element.textContent.trim();
+    element.innerHTML = '';
+    
+    // Split by words first, then characters
+    const words = text.split(' ');
+    
+    words.forEach((word, wordIndex) => {
+        // Add each character of the word
+        word.split('').forEach((char, i) => {
+            const span = document.createElement('span');
+            span.className = `char${wordIndex * 100 + i + 1}`; // Ensure unique class names
+            span.textContent = char;
+            element.appendChild(span);
+        });
+        
+        // Add a non-breaking space between words (except for the last word)
+        if (wordIndex < words.length - 1) {
+            const space = document.createElement('span');
+            space.className = 'space';
+            space.innerHTML = '&nbsp;'; // Use non-breaking space
+            element.appendChild(space);
+        }
+    });
 }
 
 // Initialize the application
